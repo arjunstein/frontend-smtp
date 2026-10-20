@@ -96,27 +96,27 @@ async function handleSubmit() {
 
   // Validation
   if (!name.value.trim()) {
-    errorMessage.value = 'Nama konfigurasi wajib diisi'
+    errorMessage.value = 'Configuration name is required'
     return
   }
   if (!host.value.trim()) {
-    errorMessage.value = 'Host SMTP wajib diisi'
+    errorMessage.value = 'SMTP host is required'
     return
   }
   if (!port.value || port.value <= 0 || port.value > 65535) {
-    errorMessage.value = 'Port harus di antara 1 dan 65535'
+    errorMessage.value = 'Port must be between 1 and 65535'
     return
   }
   if (!username.value.trim()) {
-    errorMessage.value = 'Username SMTP wajib diisi'
+    errorMessage.value = 'SMTP username is required'
     return
   }
   if (!isEditing.value && !password.value.trim()) {
-    errorMessage.value = 'Password SMTP wajib diisi'
+    errorMessage.value = 'SMTP password is required'
     return
   }
   if (!from_email.value.trim()) {
-    errorMessage.value = 'From Email wajib diisi'
+    errorMessage.value = 'Sender (From) email is required'
     return
   }
 
@@ -159,7 +159,7 @@ async function handleSubmit() {
     emit('saved', result)
     emit('close')
   } catch (err: any) {
-    errorMessage.value = err.backendError || err.message || 'Gagal menyimpan konfigurasi'
+    errorMessage.value = err.backendError || err.message || 'Failed to save configuration'
   } finally {
     isSubmitting.value = false
   }
@@ -178,10 +178,10 @@ async function handleSubmit() {
       <div class="flex items-center justify-between pb-4 border-b border-border/60">
         <div>
           <h2 class="text-lg font-bold tracking-tight">
-            {{ isEditing ? 'Edit Konfigurasi SMTP' : 'Tambah Akun SMTP Baru' }}
+            {{ isEditing ? 'Edit SMTP Configuration' : 'Add New SMTP Account' }}
           </h2>
           <p class="text-xs text-muted-foreground mt-0.5">
-            {{ isEditing ? `Mengubah parameter untuk #${editConfig?.id} (${editConfig?.name})` : 'Daftarkan server SMTP untuk relay dispatch email.' }}
+            {{ isEditing ? `Updating parameters for #${editConfig?.id} (${editConfig?.name})` : 'Register an SMTP server to relay outgoing emails.' }}
           </p>
         </div>
         <button
@@ -218,7 +218,7 @@ async function handleSubmit() {
       >
         <AlertCircle class="size-4 shrink-0 mt-0.5" />
         <div>
-          <p class="font-semibold">Validasi / Server Error</p>
+          <p class="font-semibold">Validation / Server Error</p>
           <p class="mt-0.5">{{ errorMessage }}</p>
         </div>
       </div>
@@ -227,12 +227,12 @@ async function handleSubmit() {
       <form @submit.prevent="handleSubmit" class="flex flex-col gap-4">
         <!-- Name -->
         <div class="flex flex-col gap-1.5">
-          <label class="text-xs font-semibold text-foreground">Nama Konfigurasi <span class="text-destructive">*</span></label>
+          <label class="text-xs font-semibold text-foreground">Configuration Name <span class="text-destructive">*</span></label>
           <input
             v-model="name"
             type="text"
             required
-            placeholder="cth: Transactional Mailer (Gmail)"
+            placeholder="e.g. Transactional Mailer (Gmail)"
             class="h-10 px-3 rounded-xl bg-background border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
           />
         </div>
@@ -240,7 +240,7 @@ async function handleSubmit() {
         <!-- Host & Port & Encryption -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div class="sm:col-span-1.5 flex flex-col gap-1.5">
-            <label class="text-xs font-semibold text-foreground">Host SMTP <span class="text-destructive">*</span></label>
+            <label class="text-xs font-semibold text-foreground">SMTP Host <span class="text-destructive">*</span></label>
             <input
               v-model="host"
               type="text"
@@ -293,7 +293,7 @@ async function handleSubmit() {
                 Password / App Token
                 <span v-if="!isEditing" class="text-destructive">*</span>
               </label>
-              <span v-if="isEditing" class="text-[10px] text-muted-foreground">(Kosongkan jika tidak diubah)</span>
+              <span v-if="isEditing" class="text-[10px] text-muted-foreground">(Leave blank to keep current)</span>
             </div>
             <div class="relative">
               <input
@@ -332,7 +332,7 @@ async function handleSubmit() {
             <input
               v-model="from_name"
               type="text"
-              placeholder="cth: Customer Support"
+              placeholder="e.g. Customer Support"
               class="h-10 px-3 rounded-xl bg-background border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
             />
           </div>
@@ -347,8 +347,8 @@ async function handleSubmit() {
               class="size-4 rounded border-border text-primary focus:ring-primary/40"
             />
             <div>
-              <span class="text-xs font-semibold block">Status Aktif</span>
-              <span class="text-[11px] text-muted-foreground">Izinkan pengiriman melalui profil ini</span>
+              <span class="text-xs font-semibold block">Active Status</span>
+              <span class="text-[11px] text-muted-foreground">Allow email dispatches via this profile</span>
             </div>
           </label>
 
@@ -359,8 +359,8 @@ async function handleSubmit() {
               class="size-4 rounded border-border text-primary focus:ring-primary/40"
             />
             <div>
-              <span class="text-xs font-semibold block">Jadikan Default Server</span>
-              <span class="text-[11px] text-muted-foreground">Dipakai otomatis jika request email tanpa ID</span>
+              <span class="text-xs font-semibold block">Set as Default Server</span>
+              <span class="text-[11px] text-muted-foreground">Used automatically when request omits config ID</span>
             </div>
           </label>
         </div>
@@ -372,15 +372,15 @@ async function handleSubmit() {
             @click="emit('close')"
             class="px-4 py-2 rounded-xl text-xs font-medium border border-border/70 hover:bg-muted/50 transition-colors"
           >
-            Batal
+            Cancel
           </button>
           <button
             type="submit"
             :disabled="isSubmitting"
             class="px-5 py-2 rounded-xl text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-all flex items-center gap-2 shadow-sm shadow-primary/25 disabled:opacity-50"
           >
-            <span v-if="isSubmitting">Menyimpan...</span>
-            <span v-else>{{ isEditing ? 'Perbarui Konfigurasi' : 'Daftarkan SMTP' }}</span>
+            <span v-if="isSubmitting">Saving...</span>
+            <span v-else>{{ isEditing ? 'Update Configuration' : 'Save SMTP' }}</span>
           </button>
         </div>
       </form>

@@ -75,7 +75,7 @@ export async function apiClient<T = any>(
     }
     // Network or CORS failure
     throw new ApiError(
-      err.message || 'Tidak dapat terhubung ke server backend SMTP. Pastikan server aktif dan CORS diizinkan.',
+      err.message || 'Unable to connect to the SMTP backend server. Please verify the service is running and CORS is allowed.',
       0
     )
   }

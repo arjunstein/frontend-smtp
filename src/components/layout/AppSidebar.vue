@@ -103,7 +103,7 @@ const navItems = [
         </div>
         <div v-else class="text-muted-foreground text-[11px] flex items-center gap-1">
           <AlertCircle class="size-3 text-amber-400" />
-          <span>Belum ada default SMTP</span>
+          <span>No default SMTP set</span>
         </div>
       </div>
     </div>

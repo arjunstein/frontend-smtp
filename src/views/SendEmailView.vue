@@ -43,22 +43,22 @@ onMounted(() => {
 
 // Sample quick templates
 function loadVerificationTemplate() {
-  subject.value = 'Kode Verifikasi Keamanan Akun Anda'
+  subject.value = 'Your Account Security Verification Code'
   isHtml.value = true
   body.value = `<div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff; color: #1e293b;">
-  <h2 style="color: #4f46e5; margin-bottom: 8px;">Verifikasi Akun</h2>
-  <p style="font-size: 14px; line-height: 1.5; color: #475569;">Gunakan kode satu kali berikut untuk menyelesaikan otentikasi login Anda:</p>
+  <h2 style="color: #4f46e5; margin-bottom: 8px;">Account Verification</h2>
+  <p style="font-size: 14px; line-height: 1.5; color: #475569;">Use the following one-time code to complete your login authentication:</p>
   <div style="background-color: #f1f5f9; padding: 16px; border-radius: 8px; text-align: center; margin: 24px 0;">
     <span style="font-family: monospace; font-size: 28px; font-weight: bold; letter-spacing: 4px; color: #1e1b4b;">839214</span>
   </div>
-  <p style="font-size: 12px; color: #94a3b8;">Kode ini berlaku selama 10 menit. Jangan berikan kode ini kepada siapa pun.</p>
+  <p style="font-size: 12px; color: #94a3b8;">This code is valid for 10 minutes. Do not share this code with anyone.</p>
 </div>`
 }
 
 function loadPlainTemplate() {
-  subject.value = 'Pemberitahuan Sistem (Plain Text)'
+  subject.value = 'System Notification (Plain Text)'
   isHtml.value = false
-  body.value = `Halo,\n\nIni adalah pesan uji pengiriman melalui Centralized SMTP Dispatcher Service.\nServer telah terhubung dan siap memproses relay email aplikasi Anda.\n\nSalam,\nTim Administrator`
+  body.value = `Hello,\n\nThis is a test message dispatched through the Centralized SMTP Service.\nThe server is connected and ready to relay emails for your application.\n\nBest regards,\nAdministrator Team`
 }
 
 async function handleSend() {
@@ -66,15 +66,15 @@ async function handleSend() {
   dispatchError.value = null
 
   if (toRecipients.value.length === 0) {
-    dispatchError.value = 'Minimal satu penerima (To) wajib diisi.'
+    dispatchError.value = 'At least one recipient (To) is required.'
     return
   }
   if (!subject.value.trim()) {
-    dispatchError.value = 'Subjek email wajib diisi.'
+    dispatchError.value = 'Subject line is required.'
     return
   }
   if (!body.value.trim()) {
-    dispatchError.value = 'Isi konten email tidak boleh kosong.'
+    dispatchError.value = 'Email message body cannot be empty.'
     return
   }
 
@@ -93,7 +93,7 @@ async function handleSend() {
     const result = await emailStore.sendEmail(payload)
     dispatchResult.value = result
   } catch (err: any) {
-    dispatchError.value = err.backendError || err.message || 'Gagal mengirim email'
+    dispatchError.value = err.backendError || err.message || 'Failed to send email'
   }
 }
 </script>
@@ -105,7 +105,7 @@ async function handleSend() {
       <div>
         <h2 class="text-2xl font-bold tracking-tight">Email Dispatch Studio</h2>
         <p class="text-sm text-muted-foreground mt-0.5">
-          Simulasi dan pengujian endpoint dispatch email terpusat (<code class="font-mono text-xs">POST /api/v1/emails/send</code>).
+          Simulate and test the centralized email dispatch endpoint (<code class="font-mono text-xs">POST /api/v1/emails/send</code>).
         </p>
       </div>
 
@@ -138,7 +138,7 @@ async function handleSend() {
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
           <CheckCircle2 class="size-5 shrink-0" />
-          <h3 class="font-bold text-sm">Email Berhasil Terkirim (Status: {{ dispatchResult.status }})</h3>
+          <h3 class="font-bold text-sm">Email Sent Successfully (Status: {{ dispatchResult.status }})</h3>
         </div>
         <span class="text-[11px] font-mono text-emerald-300">
           {{ formatDate(dispatchResult.sent_at) }}
@@ -149,10 +149,10 @@ async function handleSend() {
           <span class="text-emerald-400/70">SMTP Server:</span> {{ dispatchResult.smtp_name }} (#{{ dispatchResult.smtp_config_id }})
         </div>
         <div>
-          <span class="text-emerald-400/70">Penerima:</span> {{ dispatchResult.recipients.join(', ') }}
+          <span class="text-emerald-400/70">Recipients:</span> {{ dispatchResult.recipients.join(', ') }}
         </div>
         <div class="truncate">
-          <span class="text-emerald-400/70">Subjek:</span> {{ dispatchResult.subject }}
+          <span class="text-emerald-400/70">Subject:</span> {{ dispatchResult.subject }}
         </div>
       </div>
     </div>
@@ -164,7 +164,7 @@ async function handleSend() {
     >
       <AlertCircle class="size-5 shrink-0 mt-0.5" />
       <div>
-        <p class="font-bold text-sm">Gagal Mengirim Email</p>
+        <p class="font-bold text-sm">Failed to Send Email</p>
         <p class="mt-1 font-mono whitespace-pre-wrap leading-relaxed">{{ dispatchError }}</p>
       </div>
     </div>
@@ -178,9 +178,9 @@ async function handleSend() {
           <label class="text-xs font-semibold text-foreground flex items-center justify-between">
             <span class="flex items-center gap-1.5">
               <Server class="size-3.5 text-muted-foreground" />
-              Routing Akun SMTP
+              SMTP Routing Profile
             </span>
-            <span class="text-[11px] text-muted-foreground">Opsi smtp_config_id</span>
+            <span class="text-[11px] text-muted-foreground">Optional smtp_config_id</span>
           </label>
 
           <select
@@ -188,7 +188,7 @@ async function handleSend() {
             class="h-10 px-3 rounded-xl bg-background border border-border text-xs focus:outline-none focus:ring-2 focus:ring-primary/40 font-medium"
           >
             <option :value="undefined">
-              (Otomatis) Default Active System Mailer
+              (Automatic) Default Active System Mailer
               <template v-if="smtpStore.defaultConfig">
                 — {{ smtpStore.defaultConfig.name }}
               </template>
@@ -206,8 +206,8 @@ async function handleSend() {
         <!-- Recipients: To -->
         <RecipientInput
           v-model="toRecipients"
-          label="Penerima Utama (To)"
-          placeholder="tujuan@example.com"
+          label="Primary Recipients (To)"
+          placeholder="recipient@example.com"
           :required="true"
         />
 
@@ -218,7 +218,7 @@ async function handleSend() {
             @click="showCcBcc = !showCcBcc"
             class="text-xs text-primary font-medium hover:underline"
           >
-            {{ showCcBcc ? 'Sembunyikan CC & BCC' : '+ Tambah CC & BCC' }}
+            {{ showCcBcc ? 'Hide CC & BCC' : '+ Add CC & BCC' }}
           </button>
         </div>
 
@@ -238,13 +238,13 @@ async function handleSend() {
         <!-- Subject Line -->
         <div class="flex flex-col gap-1.5">
           <label class="text-xs font-semibold text-foreground">
-            Subjek Email <span class="text-destructive">*</span>
+            Subject Line <span class="text-destructive">*</span>
           </label>
           <input
             v-model="subject"
             type="text"
             required
-            placeholder="cth: Tagihan Bulanan / Notifikasi Keamanan"
+            placeholder="e.g. Monthly Statement / Account Security Alert"
             class="h-10 px-3 rounded-xl bg-background border border-border text-xs focus:outline-none focus:ring-2 focus:ring-primary/40"
           />
         </div>
@@ -253,7 +253,7 @@ async function handleSend() {
         <div class="flex flex-col gap-2">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
-              <label class="text-xs font-semibold text-foreground">Konten Pesan</label>
+              <label class="text-xs font-semibold text-foreground">Message Body</label>
               <!-- Plain vs HTML toggle -->
               <label class="flex items-center gap-2 cursor-pointer text-xs text-muted-foreground select-none">
                 <input
@@ -261,7 +261,7 @@ async function handleSend() {
                   v-model="isHtml"
                   class="size-3.5 rounded text-primary focus:ring-primary/40 border-border"
                 />
-                <span :class="{ 'text-foreground font-semibold': isHtml }">Format HTML</span>
+                <span :class="{ 'text-foreground font-semibold': isHtml }">HTML Format</span>
               </label>
             </div>
 
@@ -301,7 +301,7 @@ async function handleSend() {
             <textarea
               v-model="body"
               rows="10"
-              placeholder="Tulis pesan Anda di sini atau paste tag HTML..."
+              placeholder="Write your email body here or paste HTML markup..."
               class="w-full p-3 rounded-xl bg-background border border-border text-xs focus:outline-none focus:ring-2 focus:ring-primary/40 font-mono resize-y leading-relaxed"
             />
           </div>
@@ -311,7 +311,7 @@ async function handleSend() {
             class="min-h-[220px] max-h-[380px] overflow-y-auto p-4 rounded-xl bg-white text-zinc-900 border border-border/80 shadow-inner"
           >
             <div v-if="isHtml" v-html="body" />
-            <pre v-else class="font-sans whitespace-pre-wrap text-xs text-zinc-800">{{ body || '(Konten kosong)' }}</pre>
+            <pre v-else class="font-sans whitespace-pre-wrap text-xs text-zinc-800">{{ body || '(Empty content)' }}</pre>
           </div>
         </div>
 
@@ -321,7 +321,7 @@ async function handleSend() {
         <!-- Submit Button -->
         <div class="flex items-center justify-between pt-4 border-t border-border/60">
           <span class="text-[11px] text-muted-foreground font-mono">
-            {{ toRecipients.length }} penerima • {{ attachments.length }} lampiran
+            {{ toRecipients.length }} recipient(s) • {{ attachments.length }} attachment(s)
           </span>
           <button
             type="button"
@@ -331,7 +331,7 @@ async function handleSend() {
           >
             <RefreshCw v-if="emailStore.isSending" class="size-4 animate-spin" />
             <SendHorizontal v-else class="size-4" />
-            <span>{{ emailStore.isSending ? 'Mengirim Melalui SMTP...' : 'Kirim Sekarang' }}</span>
+            <span>{{ emailStore.isSending ? 'Sending via SMTP...' : 'Send Email' }}</span>
           </button>
         </div>
       </div>
@@ -344,7 +344,7 @@ async function handleSend() {
             <span>JSON Payload Inspector</span>
           </h3>
           <p class="text-xs text-muted-foreground">
-            Bentuk JSON yang dikirimkan ke <code class="font-mono text-primary">POST /api/v1/emails/send</code>:
+            Dispatched JSON payload structure for <code class="font-mono text-primary">POST /api/v1/emails/send</code>:
           </p>
 
           <pre class="p-3 rounded-xl bg-muted/50 border border-border/60 text-[11px] font-mono overflow-x-auto text-muted-foreground leading-relaxed max-h-80">{{
@@ -366,10 +366,10 @@ async function handleSend() {
         </div>
 
         <div class="p-4 rounded-2xl bg-muted/30 border border-border/60 text-xs text-muted-foreground flex flex-col gap-2">
-          <p class="font-semibold text-foreground">💡 Catatan Pengiriman:</p>
+          <p class="font-semibold text-foreground">💡 Dispatch Notes:</p>
           <ul class="list-disc list-inside space-y-1 text-[11px] leading-relaxed">
-            <li>Jika <code>smtp_config_id</code> tidak dipilih, backend otomatis menggunakan konfigurasi SMTP default.</li>
-            <li>Structured logging dapat dimonitor secara real-time di terminal stdout backend Go.</li>
+            <li>If <code>smtp_config_id</code> is omitted, the backend automatically uses the active default SMTP configuration.</li>
+            <li>Real-time structured logging can be observed directly on stdout in the Go backend terminal.</li>
           </ul>
         </div>
       </div>

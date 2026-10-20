@@ -6,92 +6,92 @@ Modern, centralized administration and email dispatch studio for **SMTP Agent Ba
 
 ## ⚡ Quick Start (No Node.js Required)
 
-Semua dependensi dan Vite dev server berjalan langsung di dalam Docker container:
+All dependencies and the Vite dev server run directly inside Docker containers:
 
 ```bash
-# 1. Jalankan development server dengan Hot Module Replacement (HMR)
+# 1. Start development server with Hot Module Replacement (HMR)
 docker compose up --build
 ```
 
-Buka di browser:
+Open in your browser:
 👉 **[http://localhost:5173](http://localhost:5173)**
 
-Untuk menjalankan versi production (Nginx):
+To run the production-optimized build served with Nginx:
 ```bash
 docker compose --profile prod up --build frontend-prod
 ```
-Buka di browser:
+Open in your browser:
 👉 **[http://localhost:3000](http://localhost:3000)**
 
 ---
 
-## 🚀 Fitur Utama
+## 🚀 Key Features
 
 - **Real-Time Health Monitoring (`GET /health`)**:
-  - Live status indicator (Online / Offline / Latency ms) untuk server backend Go.
-- **Manajemen Konfigurasi SMTP (`/api/v1/smtp-configs`)**:
-  - Tambah, Edit, Hapus, dan Filter server SMTP.
-  - Preset instan untuk provider populer: **Gmail**, **Mailtrap**, **SendGrid**, **Amazon SES**, dan **Local MailHog**.
-  - Toggle atomik **Default SMTP Mailer** (`PUT /api/v1/smtp-configs/{id}/default`).
-  - Active **Diagnostic Ping Test** (`POST /api/v1/smtp-configs/{id}/test`) untuk menguji handshake socket & otentikasi tanpa harus mengirim email nyata.
+  - Live status indicator (Online / Offline / Latency ms) for the Go backend service.
+- **SMTP Configuration Management (`/api/v1/smtp-configs`)**:
+  - Create, Read, Update, Delete (CRUD), and real-time filtering for SMTP accounts.
+  - Instant server presets: **Gmail**, **Mailtrap**, **SendGrid**, **Amazon SES**, and **Local MailHog**.
+  - Atomic default mailer toggle (`PUT /api/v1/smtp-configs/{id}/default`).
+  - Active **Diagnostic Ping Test** (`POST /api/v1/smtp-configs/{id}/test`) to verify socket handshake and authentication without sending test emails.
 - **Email Dispatch Studio (`POST /api/v1/emails/send`)**:
-  - Dukungan multi-recipients (`to`, `cc`, `bcc`) dengan chip email interaktif dan validasi format.
-  - Switcher konten Plain Text vs Rich HTML dengan **Live HTML Preview**.
-  - Drag-and-drop file uploader dengan konversi otomatis ke payload Base64 `AttachmentDTO`.
-  - Dukungan routing via ID konfigurasi tertentu atau otomatis menggunakan Default Mailer.
-  - JSON Payload Inspector untuk mempermudah integrasi microservice.
+  - Multi-recipient inputs (`to`, `cc`, `bcc`) with interactive tag chips and address format validation.
+  - Plain Text vs. Rich HTML mode with **Live HTML Preview**.
+  - Drag-and-drop file uploader with automatic Base64 encoding into `AttachmentDTO` structure.
+  - Flexible routing: dispatch through a specific configuration ID or fall back to the system default.
+  - Real-time JSON Payload Inspector to assist external microservice integrations.
 - **Connection & Security Settings**:
-  - Konfigurasi URL backend dinamis (default: `http://localhost:8082`).
-  - Manajemen header `X-API-Key` dengan opsi show/hide password.
+  - Dynamic backend URL configuration (default: `http://localhost:8082`).
+  - `X-API-Key` management with password mask toggle.
 - **Design & UX**:
-  - Tema Obsidian Dark / Modern Light dengan glassmorphism.
-  - Tipografi Inter & JetBrains Mono.
-  - Responsif untuk desktop, tablet, dan smartphone.
+  - Obsidian Dark and Modern Light themes with glassmorphism effects.
+  - Curated typography with Inter and JetBrains Mono fonts.
+  - Fully responsive across desktop, tablet, and mobile displays.
 
 ---
 
-## 📂 Struktur Proyek
+## 📂 Project Structure
 
 ```
 frontend-smtp/
 ├── Dockerfile                   # Multi-stage Dockerfile (dev & prod Nginx)
 ├── docker-compose.yml           # One-command orchestration
-├── nginx.conf                   # Konfigurasi SPA production Nginx
+├── nginx.conf                   # Production SPA Nginx configuration
 ├── index.html                   # HTML5 Entrypoint
 ├── package.json                 # Vue 3, Tailwind 4, TypeScript dependencies
 ├── vite.config.ts               # Vite configuration (@tailwindcss/vite)
 ├── tsconfig.json                # Strict TypeScript configuration
 └── src/
     ├── assets/
-    │   └── main.css             # Tailwind v4 @import dan custom theme tokens
+    │   └── main.css             # Tailwind v4 @import and custom design tokens
     ├── components/
     │   ├── layout/
-    │   │   ├── AppNavbar.vue    # Topbar dengan status backend & quick actions
-    │   │   └── AppSidebar.vue   # Navigasi utama
+    │   │   ├── AppNavbar.vue    # Topbar with backend health status & quick actions
+    │   │   └── AppSidebar.vue   # Main navigation sidebar
     │   ├── smtp/
-    │   │   ├── SmtpFormModal.vue      # Form modal Tambah/Edit dengan preset
-    │   │   └── SmtpTestPingModal.vue  # Modal diagnostic ping test
+    │   │   ├── SmtpFormModal.vue      # Add/Edit modal with server presets
+    │   │   └── SmtpTestPingModal.vue  # Diagnostic ping test modal
     │   └── email/
-    │       ├── RecipientInput.vue     # Input multi-email chip tags
-    │       └── AttachmentUploader.vue # Uploader file ke Base64
+    │       ├── RecipientInput.vue     # Multi-email chip tag input
+    │       └── AttachmentUploader.vue # Base64 attachment uploader
     ├── composables/
-    │   └── useTheme.ts          # Dark / Light theme manager
+    │   └── useTheme.ts          # Dark/Light theme manager
     ├── router/
     │   └── index.ts             # Vue Router
     ├── stores/
-    │   ├── config.ts            # Pinia store untuk setting URL & API Key
-    │   ├── smtp.ts              # Pinia store untuk CRUD & test SMTP
-    │   └── email.ts             # Pinia store untuk dispatch & history
+    │   ├── config.ts            # Pinia store for backend URL & API Key
+    │   ├── smtp.ts              # Pinia store for SMTP CRUD & tests
+    │   └── email.ts             # Pinia store for email dispatch & history
     ├── types/
-    │   └── api.ts               # TypeScript interfaces DTO backend
+    │   └── api.ts               # TypeScript interfaces matching backend DTOs
     ├── utils/
-    │   ├── api.ts               # Client HTTP native Fetch
-    │   └── formatters.ts        # Format tanggal, latency, dan ukuran file
+    │   ├── api.ts               # Native Fetch HTTP client with error formatting
+    │   └── formatters.ts        # Date, latency, and file size formatters
     ├── views/
-    │   ├── DashboardView.vue    # Ringkasan sistem & statistik
-    │   ├── SmtpConfigsView.vue  # Tabel konfigurasi SMTP & aksi
-    │   ├── SendEmailView.vue    # Studio pengiriman email
-    │   └── SettingsView.vue     # Pengaturan koneksi API
+    │   ├── DashboardView.vue    # System metrics & dispatch history
+    │   ├── SmtpConfigsView.vue  # SMTP table, presets, and action triggers
+    │   ├── SendEmailView.vue    # Centralized email dispatch studio
+    │   └── SettingsView.vue     # Backend connection & security settings
     ├── App.vue
     └── main.ts
 ```

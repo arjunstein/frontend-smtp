@@ -102,8 +102,8 @@ watch(
       >
         <RefreshCw class="size-8 text-primary animate-spin" />
         <div>
-          <p class="text-sm font-semibold">Menguji Koneksi & Handshake TLS...</p>
-          <p class="text-xs text-muted-foreground mt-0.5">Membuka socket TCP ke {{ config.host }}:{{ config.port }}</p>
+          <p class="text-sm font-semibold">Testing Connection & TLS Handshake...</p>
+          <p class="text-xs text-muted-foreground mt-0.5">Opening TCP socket to {{ config.host }}:{{ config.port }}</p>
         </div>
       </div>
 
@@ -116,7 +116,7 @@ watch(
         >
           <div class="flex items-center gap-2">
             <CheckCircle2 class="size-5 shrink-0" />
-            <h3 class="text-sm font-bold">Koneksi Berhasil (CONNECTED)</h3>
+            <h3 class="text-sm font-bold">Connection Successful (CONNECTED)</h3>
           </div>
           <p class="text-xs text-emerald-300/90 leading-relaxed">
             {{ testResult.message }}
@@ -134,7 +134,7 @@ watch(
         >
           <div class="flex items-center gap-2">
             <AlertCircle class="size-5 shrink-0" />
-            <h3 class="text-sm font-bold">Koneksi / Otentikasi Gagal</h3>
+            <h3 class="text-sm font-bold">Connection / Authentication Failed</h3>
           </div>
           <p class="text-xs text-rose-300/90 leading-relaxed font-mono whitespace-pre-wrap break-all">
             {{ testResult.message }}
@@ -153,7 +153,7 @@ watch(
           @click="emit('close')"
           class="px-4 py-2 rounded-xl text-xs font-medium border border-border/70 hover:bg-muted/50 transition-colors"
         >
-          Tutup
+          Close
         </button>
         <button
           type="button"
@@ -162,7 +162,7 @@ watch(
           class="px-4 py-2 rounded-xl text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-all flex items-center gap-1.5 disabled:opacity-50"
         >
           <RefreshCw class="size-3.5" :class="{ 'animate-spin': isTesting }" />
-          <span>Ping Ulang</span>
+          <span>Re-test Ping</span>
         </button>
       </div>
     </div>

@@ -27,7 +27,7 @@ export const useSmtpStore = defineStore('smtp', () => {
       })
       configs.value = res.data || []
     } catch (err: any) {
-      error.value = err.message || 'Gagal memuat konfigurasi SMTP'
+      error.value = err.message || 'Failed to fetch SMTP configurations'
       throw err
     } finally {
       isLoading.value = false
@@ -101,14 +101,14 @@ export const useSmtpStore = defineStore('smtp', () => {
       return {
         success: true,
         latency,
-        message: res.message || 'Koneksi SMTP & Otentikasi Berhasil Terverifikasi'
+        message: res.message || 'SMTP Connection & Authentication Verified Successfully'
       }
     } catch (err: any) {
       const latency = Math.round(performance.now() - start)
       return {
         success: false,
         latency,
-        message: err.message || (err.backendError ? `${err.message}: ${err.backendError}` : 'Koneksi SMTP gagal')
+        message: err.message || (err.backendError ? `${err.message}: ${err.backendError}` : 'SMTP connection failed')
       }
     } finally {
       isTesting.value[id] = false

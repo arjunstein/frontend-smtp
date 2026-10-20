@@ -35,7 +35,7 @@ function handleSave() {
     <div>
       <h2 class="text-2xl font-bold tracking-tight">Connection Settings</h2>
       <p class="text-sm text-muted-foreground mt-0.5">
-        Atur target endpoint REST API dan kredensial autentikasi API Key backend.
+        Configure REST API endpoint targets and backend API Key authentication credentials.
       </p>
     </div>
 
@@ -45,7 +45,7 @@ function handleSave() {
       class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs flex items-center gap-2.5 transition-all"
     >
       <CheckCircle2 class="size-4 shrink-0" />
-      <span>Pengaturan berhasil disimpan dan koneksi backend diperbarui!</span>
+      <span>Settings saved successfully and backend connection updated!</span>
     </div>
 
     <!-- Settings Card -->
@@ -68,7 +68,7 @@ function handleSave() {
             class="h-10 px-3 rounded-xl bg-background border border-border text-xs font-mono focus:outline-none focus:ring-2 focus:ring-primary/40"
           />
           <p class="text-[11px] text-muted-foreground">
-            Alamat server backend Go. Jika backend berjalan di port lain atau container berbeda, sesuaikan di sini.
+            Target Go backend address. Adjust if your service runs on a different port, host, or container.
           </p>
         </div>
 
@@ -77,15 +77,15 @@ function handleSave() {
           <label class="text-xs font-semibold text-foreground flex items-center justify-between">
             <span class="flex items-center gap-1.5">
               <Key class="size-3.5 text-muted-foreground" />
-              API Key (Header X-API-Key)
+              API Key (X-API-Key Header)
             </span>
-            <span class="text-[11px] text-muted-foreground">Opsional jika server bypass auth</span>
+            <span class="text-[11px] text-muted-foreground">Optional if server bypasses authentication</span>
           </label>
           <div class="relative">
             <input
               v-model="inputKey"
               :type="showKey ? 'text' : 'password'"
-              placeholder="Masukkan API Key yang sesuai dengan .env backend"
+              placeholder="Enter the API Key configured in your backend .env"
               class="w-full h-10 px-3 pr-20 rounded-xl bg-background border border-border text-xs font-mono focus:outline-none focus:ring-2 focus:ring-primary/40"
             />
             <button
@@ -97,7 +97,7 @@ function handleSave() {
             </button>
           </div>
           <p class="text-[11px] text-muted-foreground">
-            Jika variabel <code>API_KEY</code> di file <code>.env</code> backend diisi, masukkan nilai yang sama di sini agar request tidak 401 Unauthorized.
+            If <code>API_KEY</code> is configured in the backend <code>.env</code> file, provide the matching token here to avoid 401 Unauthorized responses.
           </p>
         </div>
 
@@ -118,7 +118,7 @@ function handleSave() {
             class="px-5 py-2 rounded-xl text-xs font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-all flex items-center gap-2 shadow-sm shadow-primary/25"
           >
             <Save class="size-4" />
-            <span>Simpan Pengaturan</span>
+            <span>Save Settings</span>
           </button>
         </div>
       </form>
@@ -128,7 +128,7 @@ function handleSave() {
     <div class="p-6 rounded-2xl glass-panel border border-border/80 flex flex-col gap-4">
       <h3 class="font-bold text-sm flex items-center gap-2">
         <Server class="size-4 text-indigo-400" />
-        <span>Tentang SMTP Agent Backend</span>
+        <span>About SMTP Agent Backend</span>
       </h3>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
@@ -140,7 +140,7 @@ function handleSave() {
             rel="noopener noreferrer"
             class="text-primary font-medium flex items-center gap-1 hover:underline mt-1"
           >
-            <span>Buka /documentation/index.html</span>
+            <span>Open /documentation/index.html</span>
             <ExternalLink class="size-3" />
           </a>
         </div>

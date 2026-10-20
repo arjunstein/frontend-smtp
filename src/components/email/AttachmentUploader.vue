@@ -68,9 +68,9 @@ function removeAttachment(index: number) {
     <div class="flex items-center justify-between">
       <label class="text-xs font-semibold text-foreground flex items-center gap-1.5">
         <Paperclip class="size-3.5 text-muted-foreground" />
-        <span>File Lampiran (Attachments)</span>
+        <span>File Attachments</span>
       </label>
-      <span class="text-[10px] text-muted-foreground">Otomatis di-encode Base64</span>
+      <span class="text-[10px] text-muted-foreground">Automatically encoded to Base64</span>
     </div>
 
     <!-- Drop Zone -->
@@ -98,10 +98,10 @@ function removeAttachment(index: number) {
       </div>
       <div>
         <p class="text-xs font-semibold text-foreground">
-          Klik untuk unggah atau seret file ke sini
+          Click to upload or drag & drop files here
         </p>
         <p class="text-[11px] text-muted-foreground mt-0.5">
-          PDF, Gambar, Arsip ZIP, Dokumen, dll.
+          PDF, images, ZIP archives, documents, etc.
         </p>
       </div>
     </div>
@@ -129,7 +129,7 @@ function removeAttachment(index: number) {
           type="button"
           @click.stop="removeAttachment(idx)"
           class="size-6 rounded-md hover:bg-destructive/10 hover:text-destructive flex items-center justify-center text-muted-foreground transition-colors"
-          title="Hapus lampiran"
+          title="Remove attachment"
         >
           <X class="size-3.5" />
         </button>

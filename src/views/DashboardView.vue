@@ -62,14 +62,14 @@ function triggerPingDefault() {
           class="px-4 py-2 rounded-xl text-xs font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-all flex items-center gap-2 shadow-sm shadow-primary/25"
         >
           <Plus class="size-4" />
-          <span>Tambah SMTP</span>
+          <span>Add SMTP</span>
         </button>
         <RouterLink
           to="/send"
           class="px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 hover:bg-indigo-500/20 transition-all flex items-center gap-2"
         >
           <SendHorizontal class="size-4" />
-          <span>Kirim Email</span>
+          <span>Send Email</span>
         </RouterLink>
       </div>
     </div>
@@ -82,10 +82,10 @@ function triggerPingDefault() {
       <div class="flex items-start gap-3">
         <AlertCircle class="size-5 shrink-0 mt-0.5" />
         <div>
-          <h4 class="font-bold">Backend SMTP Service Tidak Terdeteksi</h4>
+          <h4 class="font-bold">Backend SMTP Service Unreachable</h4>
           <p class="text-xs text-destructive/90 mt-1 leading-relaxed">
-            Tidak dapat menghubungi <code class="font-mono bg-destructive/20 px-1 py-0.5 rounded">{{ configStore.baseUrl }}</code>.
-            Pastikan aplikasi backend Go berjalan di port 8082 (<code class="font-mono bg-destructive/20 px-1 py-0.5 rounded">make run</code>) atau ubah alamat di menu Settings.
+            Cannot reach <code class="font-mono bg-destructive/20 px-1 py-0.5 rounded">{{ configStore.baseUrl }}</code>.
+            Ensure the Go backend service is running on port 8082 (<code class="font-mono bg-destructive/20 px-1 py-0.5 rounded">make run</code>) or change the target URL in Settings.
           </p>
         </div>
       </div>
@@ -93,7 +93,7 @@ function triggerPingDefault() {
         @click="configStore.checkHealth()"
         class="shrink-0 px-3 py-1.5 rounded-lg bg-destructive text-destructive-foreground hover:bg-destructive/90 text-xs font-medium"
       >
-        Coba Lagi
+        Retry
       </button>
     </div>
 
@@ -137,7 +137,7 @@ function triggerPingDefault() {
         <div class="mt-3">
           <span class="text-2xl font-bold tracking-tight">{{ smtpStore.configCount }}</span>
           <p class="text-xs text-muted-foreground mt-1">
-            {{ smtpStore.activeConfigs.length }} profil aktif siap digunakan
+            {{ smtpStore.activeConfigs.length }} active profiles ready to dispatch
           </p>
         </div>
       </div>
@@ -155,7 +155,7 @@ function triggerPingDefault() {
             {{ smtpStore.defaultConfig ? smtpStore.defaultConfig.name : 'None Selected' }}
           </span>
           <p class="text-xs text-muted-foreground mt-1 font-mono truncate">
-            {{ smtpStore.defaultConfig ? `${smtpStore.defaultConfig.host}:${smtpStore.defaultConfig.port}` : 'Belum ada default' }}
+            {{ smtpStore.defaultConfig ? `${smtpStore.defaultConfig.host}:${smtpStore.defaultConfig.port}` : 'No default set' }}
           </p>
         </div>
       </div>
@@ -187,20 +187,20 @@ function triggerPingDefault() {
       <div class="lg:col-span-2 flex flex-col gap-4">
         <div class="flex items-center justify-between">
           <div>
-            <h3 class="font-bold text-base tracking-tight">Akun SMTP Terdaftar</h3>
-            <p class="text-xs text-muted-foreground">Daftar koneksi server email yang terkonfigurasi di database.</p>
+            <h3 class="font-bold text-base tracking-tight">Configured SMTP Accounts</h3>
+            <p class="text-xs text-muted-foreground">Active mail server connections registered in the database.</p>
           </div>
           <RouterLink
             to="/configs"
             class="text-xs font-medium text-primary hover:underline flex items-center gap-1"
           >
-            <span>Kelola Semua</span>
+            <span>Manage All</span>
             <ExternalLink class="size-3" />
           </RouterLink>
         </div>
 
         <div v-if="smtpStore.isLoading" class="p-8 text-center text-xs text-muted-foreground">
-          Memuat konfigurasi...
+          Loading configurations...
         </div>
 
         <div v-else-if="smtpStore.configs.length === 0" class="p-8 rounded-2xl glass-panel text-center flex flex-col items-center gap-3">
@@ -208,14 +208,14 @@ function triggerPingDefault() {
             <Server class="size-6" />
           </div>
           <div>
-            <p class="font-semibold text-sm">Belum ada akun SMTP</p>
-            <p class="text-xs text-muted-foreground mt-0.5">Tambahkan akun SMTP pertama untuk mulai dispatch email.</p>
+            <p class="font-semibold text-sm">No SMTP profiles registered</p>
+            <p class="text-xs text-muted-foreground mt-0.5">Register your first SMTP account to start dispatching emails.</p>
           </div>
           <button
             @click="isAddModalOpen = true"
             class="px-4 py-2 rounded-xl text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90 mt-1"
           >
-            Daftarkan Akun
+            Register Account
           </button>
         </div>
 
@@ -265,14 +265,14 @@ function triggerPingDefault() {
       <div class="flex flex-col gap-4">
         <div class="flex items-center justify-between">
           <div>
-            <h3 class="font-bold text-base tracking-tight">Riwayat Pengiriman</h3>
-            <p class="text-xs text-muted-foreground">Log dispatch lokal sesi ini.</p>
+            <h3 class="font-bold text-base tracking-tight">Dispatch History</h3>
+            <p class="text-xs text-muted-foreground">Local session email activity log.</p>
           </div>
           <button
             v-if="emailStore.history.length > 0"
             @click="emailStore.clearHistory()"
             class="text-[11px] text-muted-foreground hover:text-destructive flex items-center gap-1"
-            title="Bersihkan riwayat"
+            title="Clear history"
           >
             <Trash2 class="size-3" />
             <span>Clear</span>
@@ -284,7 +284,7 @@ function triggerPingDefault() {
           class="p-8 rounded-2xl glass-panel text-center flex flex-col items-center gap-2 text-muted-foreground"
         >
           <Mail class="size-8 opacity-40" />
-          <p class="text-xs">Belum ada email yang dikirim pada sesi ini.</p>
+          <p class="text-xs">No emails dispatched in this session yet.</p>
         </div>
 
         <div v-else class="flex flex-col gap-2 max-h-[420px] overflow-y-auto pr-1">

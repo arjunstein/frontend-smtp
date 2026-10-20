@@ -74,7 +74,7 @@ async function handleSetDefault(cfg: SMTPConfig) {
   try {
     await smtpStore.setDefaultConfig(cfg.id)
   } catch (e: any) {
-    alert(e.message || 'Gagal mengubah default SMTP')
+    alert(e.message || 'Failed to update default SMTP')
   }
 }
 
@@ -85,7 +85,7 @@ async function confirmDelete() {
     await smtpStore.deleteConfig(deletingConfig.value.id)
     deletingConfig.value = null
   } catch (e: any) {
-    alert(e.message || 'Gagal menghapus konfigurasi')
+    alert(e.message || 'Failed to delete configuration')
   } finally {
     isDeleting.value = false
   }
@@ -99,7 +99,7 @@ async function confirmDelete() {
       <div>
         <h2 class="text-2xl font-bold tracking-tight">SMTP Configurations</h2>
         <p class="text-sm text-muted-foreground mt-0.5">
-          Kelola kredensial dan endpoint server SMTP yang terintegrasi.
+          Manage integrated SMTP credentials and mail server endpoints.
         </p>
       </div>
 
@@ -108,7 +108,7 @@ async function confirmDelete() {
           @click="smtpStore.fetchConfigs()"
           :disabled="smtpStore.isLoading"
           class="size-9 rounded-xl border border-border/80 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors"
-          title="Segarkan data"
+          title="Refresh data"
         >
           <RefreshCw class="size-4" :class="{ 'animate-spin': smtpStore.isLoading }" />
         </button>
@@ -117,7 +117,7 @@ async function confirmDelete() {
           class="px-4 py-2 rounded-xl text-xs font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-all flex items-center gap-2 shadow-sm shadow-primary/25"
         >
           <Plus class="size-4" />
-          <span>Tambah Akun Baru</span>
+          <span>Add New Account</span>
         </button>
       </div>
     </div>
@@ -130,7 +130,7 @@ async function confirmDelete() {
         <input
           v-model="searchQuery"
           type="text"
-          placeholder="Cari nama, host, email..."
+          placeholder="Search name, host, email..."
           class="w-full h-10 pl-9 pr-3 rounded-xl bg-background border border-border text-xs focus:outline-none focus:ring-2 focus:ring-primary/40 font-mono"
         />
       </div>
@@ -147,7 +147,7 @@ async function confirmDelete() {
               : 'text-muted-foreground hover:text-foreground'
           ]"
         >
-          Semua ({{ smtpStore.configs.length }})
+          All ({{ smtpStore.configs.length }})
         </button>
         <button
           type="button"
@@ -159,7 +159,7 @@ async function confirmDelete() {
               : 'text-muted-foreground hover:text-foreground'
           ]"
         >
-          Aktif
+          Active
         </button>
         <button
           type="button"
@@ -171,7 +171,7 @@ async function confirmDelete() {
               : 'text-muted-foreground hover:text-foreground'
           ]"
         >
-          Non-Aktif
+          Inactive
         </button>
       </div>
     </div>
@@ -185,9 +185,9 @@ async function confirmDelete() {
         <Server class="size-6" />
       </div>
       <div>
-        <p class="font-semibold text-sm">Tidak ada konfigurasi ditemukan</p>
+        <p class="font-semibold text-sm">No configurations found</p>
         <p class="text-xs text-muted-foreground mt-0.5">
-          {{ searchQuery ? 'Tidak ada hasil yang cocok dengan pencarian Anda.' : 'Belum ada akun SMTP yang terdaftar di database.' }}
+          {{ searchQuery ? 'No results matched your search query.' : 'No SMTP accounts registered in the database yet.' }}
         </p>
       </div>
       <button
@@ -195,7 +195,7 @@ async function confirmDelete() {
         @click="openCreateModal"
         class="px-4 py-2 rounded-xl text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90 mt-2"
       >
-        Tambah Sekarang
+        Add Now
       </button>
     </div>
 
@@ -204,13 +204,13 @@ async function confirmDelete() {
       <table class="w-full text-left border-collapse text-xs">
         <thead>
           <tr class="border-b border-border/70 bg-muted/30 text-muted-foreground font-semibold">
-            <th class="py-3.5 px-4">Nama & Provider</th>
+            <th class="py-3.5 px-4">Name & Provider</th>
             <th class="py-3.5 px-4 font-mono">Host & Port</th>
             <th class="py-3.5 px-4 font-mono">Username</th>
-            <th class="py-3.5 px-4">Pengirim (From)</th>
-            <th class="py-3.5 px-4">Enkripsi</th>
+            <th class="py-3.5 px-4">Sender (From)</th>
+            <th class="py-3.5 px-4">Encryption</th>
             <th class="py-3.5 px-4 text-center">Status</th>
-            <th class="py-3.5 px-4 text-right">Aksi</th>
+            <th class="py-3.5 px-4 text-right">Actions</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-border/60">
@@ -271,7 +271,7 @@ async function confirmDelete() {
                   class="size-1.5 rounded-full"
                   :class="cfg.is_active ? 'bg-emerald-400' : 'bg-muted-foreground'"
                 />
-                {{ cfg.is_active ? 'Aktif' : 'Non-Aktif' }}
+                {{ cfg.is_active ? 'Active' : 'Inactive' }}
               </span>
             </td>
 
@@ -282,7 +282,7 @@ async function confirmDelete() {
                 <button
                   @click="openPingModal(cfg)"
                   class="px-2.5 py-1 rounded-lg border border-border/70 hover:bg-indigo-500/10 hover:text-indigo-400 hover:border-indigo-500/30 text-[11px] font-medium transition-colors flex items-center gap-1"
-                  title="Test koneksi SMTP"
+                  title="Test SMTP connection"
                 >
                   <Activity class="size-3 text-indigo-400" />
                   <span>Test</span>
@@ -293,7 +293,7 @@ async function confirmDelete() {
                   v-if="!cfg.is_default"
                   @click="handleSetDefault(cfg)"
                   class="p-1.5 rounded-lg border border-border/70 hover:bg-muted/80 text-muted-foreground hover:text-amber-400 transition-colors"
-                  title="Jadikan default SMTP"
+                  title="Set as default SMTP"
                 >
                   <Star class="size-3.5" />
                 </button>
@@ -302,7 +302,7 @@ async function confirmDelete() {
                 <button
                   @click="openEditModal(cfg)"
                   class="p-1.5 rounded-lg border border-border/70 hover:bg-muted/80 text-muted-foreground hover:text-foreground transition-colors"
-                  title="Edit konfigurasi"
+                  title="Edit configuration"
                 >
                   <Edit2 class="size-3.5" />
                 </button>
@@ -311,7 +311,7 @@ async function confirmDelete() {
                 <button
                   @click="deletingConfig = cfg"
                   class="p-1.5 rounded-lg border border-border/70 hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
-                  title="Hapus akun"
+                  title="Delete configuration"
                 >
                   <Trash2 class="size-3.5" />
                 </button>
@@ -347,13 +347,13 @@ async function confirmDelete() {
             <AlertCircle class="size-5" />
           </div>
           <div>
-            <h3 class="font-bold text-base">Hapus Konfigurasi SMTP?</h3>
-            <p class="text-xs text-muted-foreground">Tindakan ini tidak dapat dibatalkan.</p>
+            <h3 class="font-bold text-base">Delete SMTP Configuration?</h3>
+            <p class="text-xs text-muted-foreground">This action cannot be undone.</p>
           </div>
         </div>
 
         <p class="text-xs text-foreground/90 leading-relaxed">
-          Apakah Anda yakin ingin menghapus <b>{{ deletingConfig.name }}</b> (<code class="font-mono text-muted-foreground">{{ deletingConfig.host }}:{{ deletingConfig.port }}</code>)?
+          Are you sure you want to delete <b>{{ deletingConfig.name }}</b> (<code class="font-mono text-muted-foreground">{{ deletingConfig.host }}:{{ deletingConfig.port }}</code>)?
         </p>
 
         <div class="flex items-center justify-end gap-2.5 pt-2 border-t border-border/60">
@@ -361,14 +361,14 @@ async function confirmDelete() {
             @click="deletingConfig = null"
             class="px-4 py-2 rounded-xl text-xs font-medium border border-border/70 hover:bg-muted/50"
           >
-            Batal
+            Cancel
           </button>
           <button
             @click="confirmDelete"
             :disabled="isDeleting"
             class="px-4 py-2 rounded-xl text-xs font-medium bg-destructive text-destructive-foreground hover:bg-destructive/90 disabled:opacity-50"
           >
-            {{ isDeleting ? 'Menghapus...' : 'Ya, Hapus' }}
+            {{ isDeleting ? 'Deleting...' : 'Yes, Delete' }}
           </button>
         </div>
       </div>

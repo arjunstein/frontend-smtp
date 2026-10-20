@@ -9,7 +9,7 @@ export function formatDate(dateString?: string): string {
   if (!dateString) return '-'
   try {
     const d = new Date(dateString)
-    return new Intl.DateTimeFormat('id-ID', {
+    return new Intl.DateTimeFormat('en-US', {
       dateStyle: 'medium',
       timeStyle: 'short'
     }).format(d)
@@ -23,10 +23,10 @@ export function formatRelativeTime(dateString?: string): string {
   try {
     const d = new Date(dateString)
     const diff = Math.floor((Date.now() - d.getTime()) / 1000)
-    if (diff < 60) return `${diff}d yang lalu`
-    if (diff < 3600) return `${Math.floor(diff / 60)}m yang lalu`
-    if (diff < 86400) return `${Math.floor(diff / 3600)}j yang lalu`
-    return `${Math.floor(diff / 86400)} hari yang lalu`
+    if (diff < 60) return `${diff}s ago`
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`
+    return `${Math.floor(diff / 86400)}d ago`
   } catch {
     return dateString
   }

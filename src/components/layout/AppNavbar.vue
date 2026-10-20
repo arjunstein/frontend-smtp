@@ -52,7 +52,7 @@ onMounted(() => {
             ? 'bg-rose-500/10 text-rose-400 border-rose-500/30 hover:bg-rose-500/20'
             : 'bg-muted text-muted-foreground border-border hover:bg-muted/80'
         ]"
-        title="Klik untuk ping ulang server backend"
+        title="Click to re-ping backend server"
       >
         <span
           class="size-2 rounded-full"
@@ -90,7 +90,7 @@ onMounted(() => {
         target="_blank"
         rel="noopener noreferrer"
         class="hidden lg:flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground px-2 py-1 rounded transition-colors"
-        title="Buka Swagger API Docs"
+        title="Open Swagger API Docs"
       >
         <span>Docs</span>
         <ExternalLink class="size-3" />

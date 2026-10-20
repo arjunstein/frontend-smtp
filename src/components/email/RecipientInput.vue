@@ -53,7 +53,7 @@ function isValidEmail(email: string): boolean {
       <label class="text-xs font-semibold text-foreground">
         {{ label }} <span v-if="required" class="text-destructive">*</span>
       </label>
-      <span class="text-[10px] text-muted-foreground">Tekan Enter atau koma untuk menambah</span>
+      <span class="text-[10px] text-muted-foreground">Press Enter or comma to add</span>
     </div>
 
     <div
