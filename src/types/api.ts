@@ -1,5 +1,44 @@
 export type EncryptionType = 'STARTTLS' | 'SSL' | 'TLS' | 'NONE'
 
+export interface User {
+  id: number
+  username: string
+  email: string
+  name: string
+  created_at: string
+}
+
+export interface LoginRequest {
+  username_or_email: string
+  password: string
+}
+
+export interface RegisterRequest {
+  username: string
+  email: string
+  password: string
+  name: string
+}
+
+export interface AuthResponse {
+  access_token: string
+  refresh_token: string
+  token_type: string
+  expires_in: number
+  user: User
+}
+
+export interface RefreshTokenRequest {
+  refresh_token: string
+}
+
+export interface RefreshTokenResponse {
+  access_token: string
+  refresh_token: string
+  token_type: string
+  expires_in: number
+}
+
 export interface SMTPConfig {
   id: number
   name: string
