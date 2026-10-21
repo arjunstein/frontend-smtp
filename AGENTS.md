@@ -74,7 +74,7 @@ frontend-smtp/
     │   └── formatters.ts       # Date, byte size, and latency formatters
     ├── views/
     │   ├── DashboardView.vue   # System metrics & dispatch history table
-    │   ├── LoginView.vue       # Sign In & Register tabs (standalone, no navbar)
+    │   ├── LoginView.vue       # Dedicated Sign In console (standalone, no navbar)
     │   ├── SendEmailView.vue   # Email composer, live HTML preview, JSON payload inspector
     │   ├── SettingsView.vue    # Backend endpoint, API Key, connection testing
     │   └── SmtpConfigsView.vue # SMTP configurations table, presets & ping test modal

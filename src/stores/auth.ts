@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import type { User, LoginRequest, RegisterRequest, AuthResponse } from '@/types/api'
+import type { User, LoginRequest, AuthResponse } from '@/types/api'
 import {
   apiClient,
   setAuthTokens,
@@ -61,29 +61,6 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function register(payload: RegisterRequest): Promise<void> {
-    isLoading.value = true
-    error.value = null
-    try {
-      const res = await apiClient<AuthResponse>('/api/v1/auth/register', {
-        method: 'POST',
-        body: JSON.stringify(payload)
-      })
-
-      if (res.data) {
-        token.value = res.data.access_token
-        user.value = res.data.user
-        setAuthTokens(res.data.access_token, res.data.refresh_token)
-        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(res.data.user))
-      }
-    } catch (err: any) {
-      error.value = err.message || 'Registration failed. Please check your information.'
-      throw err
-    } finally {
-      isLoading.value = false
-    }
-  }
-
   async function fetchMe(): Promise<User | null> {
     if (!token.value) return null
     try {
@@ -125,7 +102,6 @@ export const useAuthStore = defineStore('auth', () => {
     isAuthenticated,
     userInitials,
     login,
-    register,
     fetchMe,
     logout
   }
