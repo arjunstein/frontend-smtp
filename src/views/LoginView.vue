@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import { useConfigStore } from '@/stores/config'
-import { useTheme } from '@/composables/useTheme'
 import {
   Lock,
   User as UserIcon,
@@ -11,38 +9,24 @@ import {
   EyeOff,
   LogIn,
   AlertCircle,
-  Server,
-  Sun,
-  Moon,
-  KeyRound
+  Server
 } from 'lucide-vue-next'
 
 const router = useRouter()
 const route = useRoute()
 const authStore = useAuthStore()
-const configStore = useConfigStore()
-const { theme, toggleTheme } = useTheme()
+
+const savedUsername = localStorage.getItem('smtp_remembered_username') || ''
+const rememberMe = ref<boolean>(Boolean(savedUsername))
 
 // Form state
 const loginForm = reactive({
-  username_or_email: '',
+  username_or_email: savedUsername,
   password: ''
 })
 
 const showPassword = ref(false)
 const errorMessage = ref<string | null>(null)
-
-onMounted(() => {
-  if (configStore.isHealthy === null) {
-    configStore.checkHealth()
-  }
-})
-
-function fillDefaultCredentials() {
-  loginForm.username_or_email = 'admin'
-  loginForm.password = 'password123'
-  errorMessage.value = null
-}
 
 async function handleLogin() {
   if (!loginForm.username_or_email || !loginForm.password) {
@@ -56,12 +40,20 @@ async function handleLogin() {
       username_or_email: loginForm.username_or_email.trim(),
       password: loginForm.password
     })
+
+    if (rememberMe.value) {
+      localStorage.setItem('smtp_remembered_username', loginForm.username_or_email.trim())
+    } else {
+      localStorage.removeItem('smtp_remembered_username')
+    }
+
     const redirectPath = (route.query.redirect as string) || '/'
     router.push(redirectPath)
   } catch (err: any) {
     errorMessage.value = err.message || 'Invalid username/email or password.'
   }
 }
+
 </script>
 
 <template>
@@ -73,19 +65,6 @@ async function handleLogin() {
 
       <!-- Card Container -->
       <div class="relative glass-card rounded-2xl border border-border/80 shadow-2xl p-6 sm:p-8 backdrop-blur-xl">
-        <!-- Floating Theme Switcher -->
-        <div class="absolute top-4 right-4">
-          <button
-            type="button"
-            @click="toggleTheme"
-            class="size-8 rounded-lg border border-border/60 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
-            title="Toggle Theme"
-          >
-            <Sun v-if="theme === 'dark'" class="size-3.5 text-amber-400" />
-            <Moon v-else class="size-3.5 text-indigo-500" />
-          </button>
-        </div>
-
         <!-- Header -->
         <div class="flex flex-col items-center text-center mb-6">
           <div class="size-14 rounded-2xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/25 text-white mb-3">
@@ -156,15 +135,17 @@ async function handleLogin() {
             </div>
           </div>
 
-          <!-- Quick Fill Credentials Button -->
-          <button
-            type="button"
-            @click="fillDefaultCredentials"
-            class="w-full py-1.5 px-3 rounded-lg border border-dashed border-border/80 text-muted-foreground hover:text-foreground hover:border-primary/40 hover:bg-muted/30 text-xs flex items-center justify-center gap-1.5 transition cursor-pointer"
-          >
-            <KeyRound class="size-3.5 text-primary" />
-            <span>Fill Default Admin Credentials (<span class="font-mono text-foreground font-medium">admin</span>)</span>
-          </button>
+          <!-- Remember Me Checkbox -->
+          <div class="flex items-center justify-between pt-0.5">
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+              <input
+                v-model="rememberMe"
+                type="checkbox"
+                class="size-4 rounded border-input text-primary focus:ring-primary/40 accent-primary cursor-pointer"
+              />
+              <span class="text-xs text-muted-foreground hover:text-foreground transition-colors">Remember me</span>
+            </label>
+          </div>
 
           <button
             type="submit"
@@ -179,21 +160,6 @@ async function handleLogin() {
             <span>{{ authStore.isLoading ? 'Signing In...' : 'Sign In' }}</span>
           </button>
         </form>
-
-        <!-- Footer Info -->
-        <div class="mt-6 pt-4 border-t border-border/50 flex items-center justify-between text-xs text-muted-foreground">
-          <span>Backend Server:</span>
-          <div class="flex items-center gap-1.5 font-mono">
-            <span
-              class="size-2 rounded-full"
-              :class="[
-                configStore.isHealthy === true ? 'bg-emerald-400 animate-pulse' :
-                configStore.isHealthy === false ? 'bg-rose-400' : 'bg-muted-foreground'
-              ]"
-            />
-            <span class="text-foreground">{{ configStore.baseUrl }}</span>
-          </div>
-        </div>
       </div>
     </div>
   </div>

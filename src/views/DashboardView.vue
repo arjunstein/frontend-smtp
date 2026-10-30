@@ -14,7 +14,6 @@ import {
   Plus,
   ShieldCheck,
   AlertCircle,
-  ExternalLink,
   Trash2,
   Mail,
   Zap
@@ -190,13 +189,6 @@ function triggerPingDefault() {
             <h3 class="font-bold text-base tracking-tight">Configured SMTP Accounts</h3>
             <p class="text-xs text-muted-foreground">Active mail server connections registered in the database.</p>
           </div>
-          <RouterLink
-            to="/configs"
-            class="text-xs font-medium text-primary hover:underline flex items-center gap-1"
-          >
-            <span>Manage All</span>
-            <ExternalLink class="size-3" />
-          </RouterLink>
         </div>
 
         <div v-if="smtpStore.isLoading" class="p-8 text-center text-xs text-muted-foreground">

@@ -9,7 +9,10 @@ Modern, centralized administration and email dispatch studio for **SMTP Agent Ba
 All dependencies and the Vite dev server run directly inside Docker containers:
 
 ```bash
-# 1. Start development server with Hot Module Replacement (HMR)
+# 1. Setup local environment file (optional, defaults to http://localhost:8082)
+cp .env.example .env
+
+# 2. Start development server with Hot Module Replacement (HMR)
 docker compose up --build
 ```
 
@@ -22,6 +25,7 @@ docker compose --profile prod up --build frontend-prod
 ```
 Open in your browser:
 👉 **[http://localhost:3000](http://localhost:3000)**
+
 
 ---
 
@@ -54,6 +58,7 @@ Open in your browser:
 
 ```
 frontend-smtp/
+├── .env.example                 # Environment variables template
 ├── Dockerfile                   # Multi-stage Dockerfile (dev & prod Nginx)
 ├── docker-compose.yml           # One-command orchestration
 ├── nginx.conf                   # Production SPA Nginx configuration

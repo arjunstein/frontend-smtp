@@ -43,6 +43,7 @@ The project is containerized so that Node.js is not required on the host system.
 
 ```
 frontend-smtp/
+├── .env.example                # Template for environment variables
 ├── Dockerfile                  # Multi-stage Dockerfile (dev, builder, prod)
 ├── docker-compose.yml          # Container orchestration (frontend & frontend-prod)
 ├── nginx.conf                  # Production SPA routing (try_files fallback)
